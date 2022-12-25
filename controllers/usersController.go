@@ -111,8 +111,17 @@ func Login(c *gin.Context) {
 	}
 
 	// Send it back
+	c.SetSameSite(http.SameSiteLaxMode)
+	const oneMonth = 3600 * 24 * 30
+	c.SetCookie("Authorization", tokenString, oneMonth, "", "", false, true)
 	c.JSON(http.StatusOK, gin.H{
 		"token": tokenString,
 	})
 	return
+}
+
+func Validate(c *gin.Context) {
+	c.JSON(http.StatusOK, gin.H{
+		"message": "I'm loggin",
+	})
 }
